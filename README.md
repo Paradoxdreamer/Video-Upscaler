@@ -1,121 +1,111 @@
 # Video Upscaler 🚀
 
-**Push any video to its absolute quality peak** — upscale to Ultra 4K (3840×2160), interpolate to high frame rates (60 / 120 / 240 fps where hardware allows), and use the most aggressive FFmpeg quality settings possible.
+**Push any video to its absolute quality peak** — upscale to Ultra 4K, interpolate to high frame rates, and apply real AI enhancement when you need it.
 
-This tool **strains your device to the maximum** (all CPU cores, highest quality presets, Lanczos scaling, motion interpolation).  
-If the job is too heavy for the current device, it clearly tells you to rent a **virtual / cloud GPU computer**.
+This tool **strains your device to the maximum** when running locally.  
+If the job is too heavy, it tells you to rent a **virtual / cloud GPU computer** — or use a future hosted SaaS with fair compute pricing.
 
 ### Supported Platforms
-| Platform          | How to run                          |
-|-------------------|-------------------------------------|
-| **Linux**         | `./video_upscaler.sh` or Python     |
-| **Termux** (Android) | Same bash + Termux FFmpeg        |
-| **a-shell** (iOS) | Bash script (limited by device)     |
-| **Windows**       | `.bat` / PowerShell / WSL / Git Bash |
-| **Any browser**   | Web App (ffmpeg.wasm – limited size)|
-| **Cloud / VPS**   | Same CLI (recommended for 4K@120+)  |
+| Platform | How to run |
+|----------|------------|
+| **Linux / Termux / a-shell** | `./cli/video_upscaler.sh` or Python |
+| **Windows** | `.bat` / PowerShell / WSL |
+| **Any browser** | Web App (`web/index.html`) |
+| **Cloud GPU** | Same CLI (recommended for heavy AI modes) |
 
 ---
 
-## ⚠️ Reality Check
-- **True 4K @ 240 fps** is extremely demanding. Most phones, tablets and even mid-range PCs will struggle or take hours.
-- FFmpeg’s `minterpolate` can target 240 fps, but quality and speed depend heavily on your CPU/GPU.
-- Browser (Web App) version is limited by RAM (~100-200 MB videos recommended). For long or 4K source videos → use CLI on a powerful machine or cloud.
+## Processing Modes
 
-**Recommended for heavy jobs:**
-- [RunPod](https://runpod.io)
-- [Vast.ai](https://vast.ai)
-- [Lambda Labs](https://lambdalabs.com)
-- [Paperspace](https://www.paperspace.com)
-- Any NVIDIA GPU cloud instance (RTX 3090 / 4090 / A100 etc.)
+| Mode | Emoji | What it does | Billing idea |
+|------|-------|--------------|--------------|
+| **Fast** | ⚡ | FFmpeg + light enhancement | Free |
+| **Ultra** | 🔥 | AI upscale + restoration (Real-ESRGAN …) | Free / limited credits |
+| **Insane** | 💀 | Multiple AI models + high-res output | Paid (compute) |
+| **Anime** | 🎨 | Anime-specific (Real-CUGAN + RIFE) | Free / paid |
+| **Cinematic** | 🎬 | Full restoration + interpolation + colour/HDR | Paid (highest) |
+
+Full design (pricing formula, free credits, live cost estimates):
+**📄 [docs/MODES_AND_SAAS.md](docs/MODES_AND_SAAS.md)**
 
 ---
 
-## AI Models (much better quality)
+## AI Models
 
-The built-in FFmpeg path is fast and works everywhere, but for **real AI upscaling and interpolation** see:
+For real quality jumps beyond classic FFmpeg:
 
-**📄 [docs/AI_MODELS.md](docs/AI_MODELS.md)** — full guide with links for:
+**📄 [docs/AI_MODELS.md](docs/AI_MODELS.md)**
 
 | Model | Best for |
 |-------|----------|
-| **Real-ESRGAN** | General super-resolution (recommended start) |
+| **Real-ESRGAN** | General super-resolution (great starting point) |
 | **Real-CUGAN** | Anime / illustration / compressed footage |
-| **SwinIR** | Highest quality image restoration (heavier) |
-| **RIFE** | Frame interpolation (30	o60/120 FPS) |
+| **SwinIR** | Highest quality restoration (heavier) |
+| **RIFE** | Frame interpolation (30 → 60/120 FPS) |
 | **FILM** | Google Research large-motion interpolation |
 | **BasicVSR++** | Video restoration with temporal consistency |
+| Open-Sora / CogVideo | Generative (usually overkill) |
 
-The guide also tells you **exactly where to get APIs** (Replicate, Hugging Face) and how to run the models locally or on a cloud GPU.
+Includes **exact links** to official repos and where to get APIs (Replicate, Hugging Face).
 
 ---
 
-## Quick Start
+## SaaS vision (compute-based, not button-based)
 
-### 1. Install FFmpeg
-```bash
-# Linux / Termux
-pkg install ffmpeg          # Termux
-sudo apt install ffmpeg     # Ubuntu/Debian
-# Windows: download from https://ffmpeg.org or use winget/choco
-# a-shell: usually has ffmpeg or install via pkg
+Charge by real work:
+
+```
+Cost ≈ source minutes × resolution multiplier × mode multiplier
 ```
 
-### 2. Clone & Run
+Example UI estimate:
+```
+12 min · 1080p → 4K · Cinematic
+Estimated processing: 18–35 min
+Cost: ₦XXX
+```
+
+- Free credits on registration so users can try before paying
+- Open-source core stays 100% free forever
+
+Details + recommended multipliers: **[docs/MODES_AND_SAAS.md](docs/MODES_AND_SAAS.md)**
+
+---
+
+## Quick Start (open-source core)
+
 ```bash
 git clone https://github.com/Paradoxdreamer/Video-Upscaler.git
 cd Video-Upscaler
 chmod +x cli/video_upscaler.sh
 ./cli/video_upscaler.sh input.mp4
+
+# Absolute peak local settings
+./cli/video_upscaler.sh input.mp4 --max
 ```
 
-### Common options
-```bash
-./cli/video_upscaler.sh input.mp4 --fps 120 --crf 14 --preset veryslow
-./cli/video_upscaler.sh input.mp4 --4k --fps 60 --out upscaled_output.mp4
-./cli/video_upscaler.sh input.mp4 --max   # absolute peak (very slow)
-```
+Windows: `cli\video_upscaler.bat`  
+Python: `cli/video_upscaler.py`
 
 ---
 
 ## Web App
-Open `web/index.html` in any modern browser (or host it on GitHub Pages).
-
-- Drag & drop video
-- Choose target FPS & quality
-- Process in-browser (privacy-friendly, no upload)
-- Large files → tool will warn and recommend cloud
-
-Live demo (after you enable GitHub Pages):  
-`https://paradoxdreamer.github.io/Video-Upscaler/`
+Open `web/index.html` (or host on GitHub Pages).  
+Best for short clips. Heavy AI modes need a real GPU / the future SaaS.
 
 ---
 
-## Project Structure
-```
-Video-Upscaler/
-├── cli/
-│   ├── video_upscaler.sh      # Main cross-platform bash tool
-│   ├── video_upscaler.bat     # Windows helper
-│   └── video_upscaler.py      # Python version (better detection)
-├── web/
-│   ├── index.html
-│   ├── app.js
-│   └── style.css
-├── scripts/
-│   └── install.sh
-├── docs/
-│   ├── CLOUD.md               # How to rent a virtual computer
-│   └── AI_MODELS.md           # Real-ESRGAN, RIFE, FILM, etc. + API links
-└── README.md
-```
+## Docs
+
+| File | Content |
+|------|---------|
+| [docs/AI_MODELS.md](docs/AI_MODELS.md) | Real-ESRGAN, RIFE, FILM… + API links |
+| [docs/MODES_AND_SAAS.md](docs/MODES_AND_SAAS.md) | Modes, pricing model, free credits |
+| [docs/CLOUD.md](docs/CLOUD.md) | How to rent a virtual GPU computer |
 
 ---
 
 ## License
 MIT – free for personal and commercial use.
 
----
-
-**Made for users who want the absolute maximum quality the hardware can deliver.**  
-If your device can’t handle it → rent a virtual supercomputer. That’s the honest path to Ultra 4K @ 240 fps.
+**Local = free forever. Cloud SaaS = pay only for the compute you use.**

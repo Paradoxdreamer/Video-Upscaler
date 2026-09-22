@@ -31,6 +31,25 @@ If the job is too heavy for the current device, it clearly tells you to rent a *
 
 ---
 
+## AI Models (much better quality)
+
+The built-in FFmpeg path is fast and works everywhere, but for **real AI upscaling and interpolation** see:
+
+**📄 [docs/AI_MODELS.md](docs/AI_MODELS.md)** — full guide with links for:
+
+| Model | Best for |
+|-------|----------|
+| **Real-ESRGAN** | General super-resolution (recommended start) |
+| **Real-CUGAN** | Anime / illustration / compressed footage |
+| **SwinIR** | Highest quality image restoration (heavier) |
+| **RIFE** | Frame interpolation (30	o60/120 FPS) |
+| **FILM** | Google Research large-motion interpolation |
+| **BasicVSR++** | Video restoration with temporal consistency |
+
+The guide also tells you **exactly where to get APIs** (Replicate, Hugging Face) and how to run the models locally or on a cloud GPU.
+
+---
+
 ## Quick Start
 
 ### 1. Install FFmpeg
@@ -86,7 +105,8 @@ Video-Upscaler/
 ├── scripts/
 │   └── install.sh
 ├── docs/
-│   └── CLOUD.md               # How to rent a virtual computer
+│   ├── CLOUD.md               # How to rent a virtual computer
+│   └── AI_MODELS.md           # Real-ESRGAN, RIFE, FILM, etc. + API links
 └── README.md
 ```
 

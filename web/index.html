@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; connect-src 'self' https://cdn.jsdelivr.net blob:; worker-src blob:; child-src blob:; media-src blob:; img-src 'self' data: blob:;" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Video Upscaler – Browser Edition</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/util.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/util.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container">
@@ -14,74 +17,28 @@
       <h1>Video Upscaler <span>Web</span></h1>
       <p class="tagline">Push video quality to the absolute peak — right in your browser</p>
     </header>
-
     <div class="warning-box">
       <strong>⚠️ Browser Limits</strong><br>
-      Works best with short videos (< 100–150 MB).  
-      True 4K @ 120/240 fps will be very slow or crash on most devices.<br>
-      For heavy jobs → use the CLI on a powerful PC or rent a cloud GPU.
+      Works best with short videos (&lt; 100–150 MB). For heavy jobs use the CLI or a cloud GPU.
     </div>
-
     <div class="upload-area" id="dropZone">
       <input type="file" id="fileInput" accept="video/*" hidden />
-      <p>Drag & drop a video here<br>or <button id="browseBtn">Browse</button></p>
+      <p>Drag & drop a video here<br>or <button type="button" id="browseBtn">Browse</button></p>
       <p id="fileName" class="file-name"></p>
     </div>
-
     <div class="controls">
-      <label>
-        Target FPS
-        <select id="fps">
-          <option value="30">30</option>
-          <option value="60" selected>60</option>
-          <option value="120">120</option>
-          <option value="240">240 (extreme)</option>
-        </select>
-      </label>
-
-      <label>
-        Quality (CRF)
-        <select id="crf">
-          <option value="18">18 (good)</option>
-          <option value="15" selected>15 (high)</option>
-          <option value="12">12 (peak)</option>
-          <option value="10">10 (near lossless)</option>
-        </select>
-      </label>
-
-      <label>
-        Resolution
-        <select id="res">
-          <option value="1920x1080">1080p</option>
-          <option value="3840x2160" selected>4K Ultra</option>
-        </select>
-      </label>
+      <label>Target FPS<select id="fps"><option value="30">30</option><option value="60" selected>60</option><option value="120">120</option><option value="240">240</option></select></label>
+      <label>Quality (CRF)<select id="crf"><option value="18">18</option><option value="15" selected>15</option><option value="12">12</option><option value="10">10</option></select></label>
+      <label>Resolution<select id="res"><option value="1920x1080">1080p</option><option value="3840x2160" selected>4K Ultra</option></select></label>
     </div>
-
-    <button id="startBtn" disabled>Start Upscale</button>
-
-    <div id="progressBox" class="progress-box hidden">
-      <div class="bar"><div id="progressBar"></div></div>
-      <p id="status">Loading FFmpeg core…</p>
-    </div>
-
-    <div id="result" class="result hidden">
-      <a id="downloadLink" download>Download Upscaled Video</a>
-    </div>
-
+    <button type="button" id="startBtn" disabled>Start Upscale</button>
+    <div id="progressBox" class="progress-box hidden"><div class="bar"><div id="progressBar"></div></div><p id="status">Loading…</p></div>
+    <div id="result" class="result hidden"><a id="downloadLink" download rel="noopener">Download Upscaled Video</a></div>
     <footer>
-      <p>
-        CLI versions for Linux / Termux / a-shell / Windows available on 
-        <a href="https://github.com/Paradoxdreamer/Video-Upscaler" target="_blank">GitHub</a>
-      </p>
-      <p class="cloud">
-        Need real power? Rent a virtual computer → 
-        <a href="https://runpod.io" target="_blank">RunPod</a> · 
-        <a href="https://vast.ai" target="_blank">Vast.ai</a>
-      </p>
+      <p>CLI on <a href="https://github.com/Paradoxdreamer/Video-Upscaler" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+      <p class="cloud">Cloud GPU: <a href="https://runpod.io" target="_blank" rel="noopener noreferrer">RunPod</a> · <a href="https://vast.ai" target="_blank" rel="noopener noreferrer">Vast.ai</a></p>
     </footer>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
